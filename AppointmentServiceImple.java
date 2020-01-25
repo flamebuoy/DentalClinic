@@ -1,42 +1,40 @@
-package com.spr.serv;
+package com.dist.service;
 
 import java.util.List;
 
-import com.spr.dao.AppointmentDao;
-import com.spr.dto.Appointment;
+import com.dist.dao.AppointmentDaoImple;
+import com.dist.dto.Appointment;
 
 public class AppointmentServiceImple implements AppointmentService {
-
-	@Autowired
-	private AppointmentDao appointmentDao;
 	
-	public void setDoctorDao(AppointmentDao appointmentDao) {
-		this.appointmentDao = appointmentDao;
-		
-	}
+	private AppointmentDaoImple appointmentDao;
 	
-	@Override
 	public void makeappointment(Appointment appointment) {
 		// TODO Auto-generated method stub
+		appointmentDao.makeappointment(appointment);
 		
 	}
 
-	@Override
-	public void showappointment(int appointmentId) {
+	public void updateappointment(Appointment appointment) {
 		// TODO Auto-generated method stub
+		appointmentDao.updateappointment(appointment);
 		
 	}
 
-	@Override
+	public void deleteappointment(int appointmentId) {
+		// TODO Auto-generated method stub
+		appointmentDao.deleteappointment(appointmentId);
+		
+	}
+
 	public Appointment selectById(int appointmentId) {
 		// TODO Auto-generated method stub
-		return null;
+		return appointmentDao.selectById(appointmentId);
 	}
 
-	@Override
 	public List<Appointment> selectAll() {
 		// TODO Auto-generated method stub
-		return null;
+		return appointmentDao.selectAll();
 	}
 
 }

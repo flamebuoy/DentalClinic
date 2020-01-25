@@ -1,99 +1,68 @@
-
+package com.dist.dao;
 
 import java.util.List;
 
-import org.hibernate.HibernateException;
-import org.hibernate.Query;
-import org.hibernate.Session;
-import org.hibernate.Transaction;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.orm.hibernate4.HibernateCallback;
-import org.springframework.orm.hibernate4.HibernateTemplate;
+import org.springframework.jdbc.core.BeanPropertyRowMapper;
+import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
 
-import com.spr.dto.Appointment;
+import com.dist.dto.Appointment;
+import com.dist.dto.AppointmentRowMapper;
 
+@Transactional
+@Repository
 public class AppointmentDaoImple implements AppointmentDao {
 
 	@Autowired
-	private HibernateTemplate hibernateTemplate;
+	private JdbcTemplate jdbcTemplate;
 	
-	public void setHibernateTemplate(HibernateTemplate hibernateTemplate) {
-		this.hibernateTemplate = hibernateTemplate;
-}
-
-	@Override
+	
 	public void makeappointment(Appointment appointment) {
-		// TODO Auto-generated method stub
-		hibernateTemplate.execute(new HibernateCallback<List<Appointment>>() {
-			@Override
-			public List<Appointment> doInHibernate(Session session) throws HibernateException {
-				Transaction t = session.beginTransaction();
-				session.save(appointment);
-				t.commit();
-				session.flush();
-				session.close();
-				return null;
-			}
-			
-		});
+		String query = "INSERT INTO appointment(appointment_id, patient_id, doctor_name, aptt_purpose, DOA, Aptt_time) VALUES(?,?,?,?,?)";
+		jdbcTemplate.update(query, appointment.getAppointmentId(), appointment.getPatientId(), appointment.getDoctorName(), appointment.getAppointmentPurpose(), appointment.getDateOfAppointment(), appointment.getAppointmentTime());
+		
 		
 	}
 
-	@Override
-	public void showappointment(int appointmentId) {
+	
+	public void updateappointment(Appointment appointment) {
 		// TODO Auto-generated method stub
-		hibernateTemplate.execute(new HibernateCallback<List<Appointment>>() {
-			@Override
-			public List<Appointment> doInHibernate(Session session) throws HibernateException {
-				Transaction t = session.beginTransaction();
-				session.show(new Appointment(appointmentID));
-				t.commit();
-				session.flush();
-				session.close();
-				return null;
-			}
-			
-		});
+		String query = "UPDATE appointment SET patient_id=?, doctor_name=?, aptt_purpose=?, DOA=?, Aptt_time=? WHERE appointmentId=?";
+		jdbcTemplate.update(query, appointment.getPatientId(), appointment.getDoctorName(), appointment.getAppointmentPurpose(), appointment.getDateOfAppointment(), appointment.getAppointmentTime(), appointment.getAppointmentId());
 		
 	}
 
-	@Override
+	
+	public void deleteappointment(int appointmentId) {
+		// TODO Auto-generated method stub
+		String query = "DELETE FROM appointment WHERE appointment_id=?";
+		jdbcTemplate.update(query, appointmentId);
+		
+	}
+
+	
 	public Appointment selectById(int appointmentId) {
 		// TODO Auto-generated method stub
-		Appointment a = hibernateTemplate.execute(new HibernateCallback<Appointment>() {
-			@Override
-			public Appointment doInHibernate(Session session) throws HibernateException {
-				Transaction t = session.beginTransaction();
-				Appointment apt = (Appointment)session.get(Appointment.class, appointmentId);
-				t.commit();
-				session.flush();
-				session.close();
-				return apt;
-			}
-			
-		});
-
-		return a;
+		String query = "SELECT * FROM appointment WHERE appointment_id = ?";
+		RowMapper<Appointment> rowMapper = new BeanPropertyRowMapper<Appointment>(Appointment.class);
+		Appointment appointment = jdbcTemplate.queryForObject(query, rowMapper, appointmentId);
+		
+		return appointment;
 		
 	}
 
-	@Override
+	
 	public List<Appointment> selectAll() {
 		// TODO Auto-generated method stub
-		List<Appointment> li = hibernateTemplate.execute(new HibernateCallback<List<Appointment>>() {
-			@Override
-			public List<Appointment> doInHibernate(Session session) throws HibernateException {
-				Transaction t = session.beginTransaction();
-				Query q = session.createQuery("from Appointment");
-				List<Appointment> li = q.list();
-				t.commit();
-				session.flush();
-				session.close();
-				return li;
-			}
-			
-		});
-
-		return li;
+		String query = "SELECT * from appointment";
+		RowMapper<Appointment> rowMapper = new AppointmentRowMapper();
+		List<Appointment> list = jdbcTemplate.query(query, rowMapper);
+		
+		
+		return list;
 	}
+
+}

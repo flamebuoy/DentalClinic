@@ -1,43 +1,70 @@
+package com.dist.dto;
 
-
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.Table;
-
-@Entity
-@Table(name = "appointment")
 public class Appointment {
+
+	private int AppointmentId;
+	private int PatientId;
+	private String DoctorName;
+	private String AppointmentPurpose;
+	private String DateOfAppointment;
+	private String AppointmentTime;
 	
-	@Id
-	@Column(name = "appointment_id")
-	private int appointmentId;
-	@Column(name = "Appointment_reason")
-	private String FirstName;
-	
-	public Appointment(int appointmentId) {
+	@Override
+	public String toString() {
+		return "Appointment [AppointmentId=" + AppointmentId + ", PatientId=" + PatientId + ", DoctorName=" + DoctorName + ", AppointmentPurpose="
+				+ AppointmentPurpose + ", DateOfAppointment=" + DateOfAppointment + ", AppointmentTime="
+				+ AppointmentTime + "]";
+	}
+	public Appointment(int appointmentId, int patientId, String doctorName, String appointmentPurpose, String dateOfAppointment,
+			String appointmentTime) {
 		super();
-		this.appointmentId = appointmentId;
+		AppointmentId = appointmentId;
+		PatientId = patientId;
+		DoctorName = doctorName;
+		AppointmentPurpose = appointmentPurpose;
+		DateOfAppointment = dateOfAppointment;
+		AppointmentTime = appointmentTime;
+	}
+	public int getAppointmentId() {
+		return AppointmentId;
+	}
+	public void setAppointmentId(int appointmentId) {
+		AppointmentId = appointmentId;
+	}
+	public int getPatientId() {
+		return PatientId;
+	}
+	public void setPatientId(int patientId) {
+		PatientId = patientId;
+	}
+	public String getDoctorName() {
+		return DoctorName;
+	}
+	public void setDoctorName(String doctorName) {
+		DoctorName = doctorName;
+	}
+	public String getAppointmentPurpose() {
+		return AppointmentPurpose;
+	}
+	public void setAppointmentPurpose(String appointmentPurpose) {
+		AppointmentPurpose = appointmentPurpose;
+	}
+	public String getDateOfAppointment() {
+		return DateOfAppointment;
+	}
+	public void setDateOfAppointment(String dateOfAppointment) {
+		DateOfAppointment = dateOfAppointment;
+	}
+	public String getAppointmentTime() {
+		return AppointmentTime;
+	}
+	public void setAppointmentTime(String appointmentTime) {
+		AppointmentTime = appointmentTime;
 	}
 	public Appointment() {
 		super();
 		// TODO Auto-generated constructor stub
 	}
-	private String AppointmentDate;
-	private String AppointmentTime;
 	
-	public String getAppointmentDate() {
-		return AppointmentDate;
-	}
-	public void setAppointmentDate(String appointmentdate) {
-		AppointmentDate = appointmentdate;
-	}
-	public String getAppointmentTime() {
-		return AppointmentTime;
-	}
-	public void setAppointmentTime(String appointmenttime) {
-		AppointmentTime = appointmenttime;
-	}
 	
 }
-
